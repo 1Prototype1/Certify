@@ -15,6 +15,16 @@ Lightweight toolkit for:
 ## Quick Start
 
 ### OpenSSL (TL;DR)
+#### ECC (ECDSA)
+```
+openssl ecparam -name secp384r1 -genkey -out rootCA.key
+openssl ec -in rootCA.key -aes256 -out rootCA.key.enc
+openssl req -new -x509 -sha384 -days 3650 -key rootCA.key.enc -out rootCA.crt
+openssl ecparam -name secp384r1 -genkey -out server.key
+openssl req -new -sha384 -key server.key -out server.csr
+openssl x509 -req -in server.csr -CA rootCA.crt -CAkey rootCA.key.enc -extfile cert.ext -days 1825 -sha384 -out server.crt
+```
+#### RSA
 ```
 openssl genrsa -aes256 -out rootca.key 4096
 openssl req -x509 -new -nodes -key rootca.key -sha256 -days 1826 -out rootca.crt
